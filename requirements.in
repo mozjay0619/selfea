@@ -8,6 +8,5 @@ msgpack==1.0.0
 pyarrow
 scikit-learn
 future
-boto3
 hierarchical-memmap-format
 xgboost
