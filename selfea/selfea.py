@@ -50,8 +50,8 @@ class Selfea():
 		self.feature_evaluator = FeatureEvaluator(self.task_manager, cv)
 		
 		if not self.debug_mode:
-			self.dask_client = ClientFuture(local_client_n_workers=2, 
-											local_client_threads_per_worker=2)
+			self.dask_client = ClientFuture(local_client_n_workers=self.task_manager.local_client_n_workers, 
+											local_client_threads_per_worker=self.task_manager.local_client_threads_per_worker)
 			self.dask_client.get_dashboard_link()
 
 		else:
