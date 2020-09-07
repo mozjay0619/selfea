@@ -5,8 +5,8 @@ import selfea
 
 VERSION = selfea.__version__
 
-with open("README.rst", "r") as fh:
-    long_description = fh.read()
+# with open("README.rst", "r") as fh:
+#     long_description = fh.read()
 
 # setup(
 # 	name="selfea", 
