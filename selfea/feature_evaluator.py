@@ -97,5 +97,7 @@ class FeatureEvaluator():
         rmse_score = np.sqrt(mse(preds, y_valid))
         mae_score = mae(preds, y_valid)
         composite_score = rmse_score/2.0 + mae_score/2.0
-        return (np.mean(preds), np.mean(X_valid.ravel()))
+        return composite_score
+
+        
         
