@@ -118,11 +118,11 @@ class Selfea():
 			for k, v in feature_futures_dict.items():
 
 				if self.debug_mode:
-					score = np.mean(v)
+					score = score = [future.result() for future in v]
 				else:
-					# score = np.mean([future.result() for future in v])
+					score = np.mean([future.result() for future in v])
 # 
-					score = [future.result() for future in v]
+					# score = [future.result() for future in v]
 
 
 				feature_score_dict[k] = score
@@ -139,11 +139,17 @@ class Selfea():
 			
 			counter += 1
 
-			# if best_score > new_score:
-			# 	best_score = new_score
-			# else:
-			# 	print('stopping criterion met!')
-			# 	break
+			if self.debug_mode:
+
+				pass
+
+			else:
+
+				if best_score > new_score:
+					best_score = new_score
+				else:
+					print('stopping criterion met!')
+					break
 			
 		return score_tracking_dict, current_features
 
