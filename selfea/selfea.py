@@ -1,6 +1,6 @@
 from selfea.utils.data_structure_utils import return_indices, get_max_value_key, get_min_value_key
-from selfea.dask_clients import ClientFuture
-from selfea.feature_evaluator import FeatureEvaluator
+from selfea.utils.dask_clients import ClientFuture
+from selfea.core._feature_evaluator import FeatureEvaluator
 from selfea.default_models.default_xgboost_regressor import DefaultXGBoostRegressor
 from collections import defaultdict
 
@@ -47,7 +47,11 @@ class Selfea():
 	def run_evaluation(self):
 		
 		cv = KFold(n_splits=5)
-		self.feature_evaluator = FeatureEvaluator(self.task_manager, cv)
+
+		# cv, model_algo, root_dirpath, target
+
+		self.feature_evaluator = FeatureEvaluator(cv, self.task_manager.model_algo, self.task_manager.root_dirpath, 
+			self.task_manager.target)
 		
 		if not self.debug_mode:
 			self.dask_client = ClientFuture(local_client_n_workers=self.task_manager.local_client_n_workers, 
@@ -72,7 +76,7 @@ class Selfea():
 
 			for new_feature in feature_stack:
 
-				for i in range(1, 5):
+				for i in range(0, 5):
 
 					feature_futures_dict[new_feature].append(feature_evaluator.evaluate_feature(current_features, new_feature, i))
 
