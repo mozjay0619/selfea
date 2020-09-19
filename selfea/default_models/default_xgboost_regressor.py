@@ -3,12 +3,13 @@ from sklearn.model_selection import train_test_split
 
 class DefaultXGBoostRegressor():
     
-    def __init__(self):
-        pass
+    def __init__(self, n_jobs=2):
+        self.n_jobs = n_jobs
+
     
     def fit(self, X, y):
         
-        algo = xgb.XGBRegressor(n_estimators=300, tree_method='hist')  
+        algo = xgb.XGBRegressor(n_estimators=300, tree_method='hist', n_jobs=self.n_jobs)  
         
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=7)
         eval_set = [(X_train, y_train), (X_test, y_test)]

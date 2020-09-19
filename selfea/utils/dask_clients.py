@@ -29,10 +29,12 @@ class ClientFuture():
     def __init__(self, local_client_n_workers, local_client_threads_per_worker):
         
         host_ip = get_host_ip_address()
+        print(host_ip)
         self.local_cluster = LocalCluster(n_workers=local_client_n_workers,
                                threads_per_worker=local_client_threads_per_worker, 
                                processes=True, 
                                host=host_ip)
+        print(self.local_cluster)
         self.local_client = Client(address=self.local_cluster, timeout='2s') 
         
     def submit(self, func, *args, **kwargs):
