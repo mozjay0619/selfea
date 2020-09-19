@@ -18,13 +18,14 @@ class FeatureEvaluator():
     score of the feature
     """
     
-    def __init__(self, cv, model_algo, root_dirpath, target, evaluation_method=None):
+    def __init__(self, cv, model_algo, root_dirpath, target, data_loader, evaluation_method=None):
         
         self.cv = cv
         self.model_algo = model_algo
         self.root_dirpath = root_dirpath
         self.target = target
         self.custom_evaluation_method = evaluation_method
+        self.data_loader = data_loader
         
     def evaluate_feature(self, current_features, new_feature, i):
         """
@@ -39,7 +40,7 @@ class FeatureEvaluator():
         self.new_feature = new_feature
         self.i = i
         
-        X, y = DataLoader.load_data(self.root_dirpath, current_features + [new_feature], self.target)
+        X, y = self.data_loader.load_data(current_features + [new_feature], self.target)
 
         # X, y = self._load_data(current_features, new_feature)
         X_train, X_valid, y_train, y_valid, train_index, valid_index = self._train_valid_split(X, y, i)

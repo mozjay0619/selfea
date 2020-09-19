@@ -9,7 +9,7 @@ import numpy as np
 
 class FeatureSelector():
 	
-	def __init__(self, root_dirpath, feature_stack, max_num_features, parallel_feature_evaluator, 
+	def __init__(self, root_dirpath, feature_stack, max_num_features, parallel_feature_evaluator, data_loader,
 				 corr_thres=0.85, verbose=False):
 		
 		self.current_features = []
@@ -18,7 +18,7 @@ class FeatureSelector():
 		self.score_tracking_dict = dict()
 		
 		self.parallel_feature_evaluator = parallel_feature_evaluator
-		self.data = DataLoader.load_dataframe(root_dirpath, feature_stack)
+		self.data = data_loader.load_dataframe(feature_stack)
 		
 		self.corr_thres = corr_thres
 
