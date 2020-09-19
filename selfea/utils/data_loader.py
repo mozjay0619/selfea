@@ -8,9 +8,11 @@ import pandas as pd
 
 class DataLoader():
 	
-	def __init__(self):
+	def init(self, dirpath):
 		
-		pass
+		self.f = HMF.open_file(dirpath, mode='r+')
+
+
 	
 	@staticmethod
 	def save_data(dirpath, data, orderby=None, groupby=None):
@@ -29,13 +31,12 @@ class DataLoader():
 		f.close()
 		
 
-	@staticmethod
-	def load_data(dirpath, features, target=None):
+	def load_data(self, features, target=None):
 
-		f = HMF.open_file(dirpath, mode='r+')
+		# f = HMF.open_file(dirpath, mode='r+')
 		
-		data_array = f.get_array('/data_array')
-		column_names = list(f.get_node_attr('/column_names', key='column_names'))
+		data_array = self.f.get_array('/data_array')
+		column_names = list(self.f.get_node_attr('/column_names', key='column_names'))
 		
 		feature_column_indices = return_indices(column_names, features)
 		X = data_array[:, feature_column_indices]
@@ -51,13 +52,13 @@ class DataLoader():
 
 			return X
 
-	@staticmethod
-	def load_dataframe(dirpath, features):
 
-		f = HMF.open_file(dirpath, mode='r+')
+	def load_dataframe(self, features):
+
+		# f = HMF.open_file(dirpath, mode='r+')
 		
-		data_array = f.get_array('/data_array')
-		column_names = list(f.get_node_attr('/column_names', key='column_names'))
+		data_array = self.f.get_array('/data_array')
+		column_names = list(self.f.get_node_attr('/column_names', key='column_names'))
 
 		return pd.DataFrame(data_array, columns=column_names)
 
