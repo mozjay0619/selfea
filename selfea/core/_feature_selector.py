@@ -9,22 +9,26 @@ import numpy as np
 
 class FeatureSelector():
 	
-	def __init__(self, root_dirpath, feature_stack, max_num_features, parallel_feature_evaluator, data_loader,
+	def __init__(self, max_num_features, parallel_feature_evaluator, data_loader,
 				 corr_thres=0.85, verbose=False):
 		
 		self.current_features = []
-		self.feature_stack = copy.copy(feature_stack)
+		# self.feature_stack = copy.copy(feature_stack)
 		self.max_num_features = max_num_features
 		self.score_tracking_dict = dict()
 		
 		self.parallel_feature_evaluator = parallel_feature_evaluator
-		self.data = data_loader.load_dataframe(feature_stack)
 		
+		self.data_loader = data_loader
 		self.corr_thres = corr_thres
 
 		self.verbose = verbose
 	
-	def select_features(self):
+	def select_features(self, group_key=None):
+
+		self.feature_stack = self.data_loader.load_feature_stack(group_key=group_key)
+		self.data = self.data_loader.load_dataframe(self.feature_stack, group_key=group_key)
+		
 		
 		counter = 0
 		best_score = np.inf
@@ -33,7 +37,8 @@ class FeatureSelector():
 			
 			feature_score_dict = self.parallel_feature_evaluator.evaluate_features(
 				self.current_features, 
-				self.feature_stack
+				self.feature_stack,
+				group_key=group_key
 			)
 			
 			best_feature = get_min_value_key(feature_score_dict)
