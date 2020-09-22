@@ -28,10 +28,12 @@ class ParallelFeatureEvaluator():
     def _feature_evaluation_score_futures(self, current_features, feature_stack, group_key=None):
         
         feature_score_futures_dict = defaultdict(list)
+
+        fold_count = self.feature_evaluator.cv.get_n_splits()
         
         for new_feature in feature_stack:
             
-            for i in range(0, 5):
+            for i in range(1, fold_count):
                 
                 feature_score_futures_dict[new_feature].append(self.dask_client.submit(
                     self.feature_evaluator.evaluate_feature, 
