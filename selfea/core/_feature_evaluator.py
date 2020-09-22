@@ -18,16 +18,15 @@ class FeatureEvaluator():
     score of the feature
     """
     
-    def __init__(self, cv, model_algo, root_dirpath, target, data_loader, evaluation_method=None):
+    def __init__(self, cv, model_algo, target, data_loader, evaluation_method=None):
         
         self.cv = cv
         self.model_algo = model_algo
-        self.root_dirpath = root_dirpath
         self.target = target
         self.custom_evaluation_method = evaluation_method
         self.data_loader = data_loader
         
-    def evaluate_feature(self, current_features, new_feature, i):
+    def evaluate_feature(self, current_features, new_feature, i, group_key=None):
         """
         Requirements:
         - read in data
@@ -40,7 +39,7 @@ class FeatureEvaluator():
         self.new_feature = new_feature
         self.i = i
         
-        X, y = self.data_loader.load_data(current_features + [new_feature], self.target)
+        X, y = self.data_loader.load_data(current_features + [new_feature], self.target, group_key=group_key)
 
         # X, y = self._load_data(current_features, new_feature)
         X_train, X_valid, y_train, y_valid, train_index, valid_index = self._train_valid_split(X, y, i)
@@ -49,22 +48,7 @@ class FeatureEvaluator():
         
         return score
         
-    # def _load_data(self, current_features, new_feature):
-        
-    #     root_dirpath = self.root_dirpath
-    #     f = HMF.open_file(root_dirpath, mode='r+')
-        
-    #     data_array = f.get_array('/data_array')
-    #     column_names = list(f.get_node_attr('/column_names', key='column_names'))
-        
-    #     new_features = current_features + [new_feature]
-    #     feature_column_indices = return_indices(column_names, new_features)
-    #     target_column_index = return_indices(column_names, [self.target])
-        
-    #     X = data_array[:, feature_column_indices]
-    #     y = data_array[:, target_column_index]
-        
-    #     return X, y
+
         
     def _train_valid_split(self, X, y, i):
         

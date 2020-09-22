@@ -1,3 +1,5 @@
+
+
 from ..utils.data_structure_utils import return_indices
 
 import HMF
@@ -9,7 +11,7 @@ class DataLoader():
 	def init(self, dirpath):
 		
 		self.f = HMF.open_file(dirpath, mode='r+')
-		self.dirpath = dirpath
+
 
 	
 	@staticmethod
@@ -29,19 +31,12 @@ class DataLoader():
 		f.close()
 		
 
-	def load_data(self, features, target=None, group_key=None):
+	def load_data(self, features, target=None):
 
+		# f = HMF.open_file(dirpath, mode='r+')
 		
-		if not group_key:
-			
-			data_array = self.f.get_array('/data_array')
-			column_names = list(self.f.get_node_attr('/column_names', key='column_names'))
-		
-		else:
-
-			data_array = self.f.get_array('/{}/data_array'.format(group_key))
-			column_names = self.f.get_node_attr('/{}/column_names'.format(group_key), key='column_names')
-
+		data_array = self.f.get_array('/data_array')
+		column_names = list(self.f.get_node_attr('/column_names', key='column_names'))
 		
 		feature_column_indices = return_indices(column_names, features)
 		X = data_array[:, feature_column_indices]
@@ -58,26 +53,12 @@ class DataLoader():
 			return X
 
 
-	def load_dataframe(self, features, group_key=None):
+	def load_dataframe(self, features):
 
+		# f = HMF.open_file(dirpath, mode='r+')
 		
-		if not group_key:
-			data_array = self.f.get_array('/data_array')
-			column_names = list(self.f.get_node_attr('/column_names', key='column_names'))
-
-		else:
-
-			data_array = self.f.get_array('/{}/data_array'.format(group_key))
-			column_names = self.f.get_node_attr('/{}/column_names'.format(group_key), key='column_names')
-
+		data_array = self.f.get_array('/data_array')
+		column_names = list(self.f.get_node_attr('/column_names', key='column_names'))
 
 		return pd.DataFrame(data_array, columns=column_names)
-
-	def load_feature_stack(self, group_key=None):
-
-		return self.f.get_node_attr('/{}/all_corr_features'.format(group_key), key='all_corr_features')
-
-
-
-
 
