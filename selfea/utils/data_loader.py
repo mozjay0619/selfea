@@ -6,7 +6,9 @@ import pandas as pd
 
 class DataLoader():
 	
-	def init(self, dirpath):
+	def init(self, dirpath, overwrite=False):
+
+		
 		
 		self.f = HMF.open_file(dirpath, mode='r+')
 		self.dirpath = dirpath
